@@ -101,6 +101,8 @@ void Landscape::draw(  mat4 &worldToViewTransform )
 
   glLineWidth( 2.0 );
 
+ 
+
   glDrawArrays( GL_LINE_STRIP, 0, numVerts );
 }
 

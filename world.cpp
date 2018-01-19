@@ -68,8 +68,8 @@ void World::draw()
 
     // Find the world-to-view transform that is centred on the lander
     // and is ZOOM_WIDTH wide (in world coordinates).
-
     // YOUR CODE HERE
+ 
   }
 
   // Draw the landscape and lander, passing in the worldToViewTransform

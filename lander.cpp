@@ -22,7 +22,7 @@
 
 // Set up the lander by creating a VAO and rewriting the lander
 // vertices so that the lander is centred at (0,0).
-
+GLuint LanderVertexArrayID;
 void Lander::setupVAO()
 
 {
@@ -42,7 +42,9 @@ void Lander::setupVAO()
     if (v.y > max.y) max.y = v.y;
   }
 
-  numSegments = i/2;		// number of segments in the lander model
+  numSegments = i/2;
+  
+  		// number of segments in the lander model
 
   // Rewrite the model vertices so that the lander is centred at (0,0)
   // and has width LANDER_WIDTH.
@@ -64,6 +66,19 @@ void Lander::setupVAO()
   // ---- Create a VAO for this object ----
 
   // YOUR CODE HERE
+  
+ glGenVertexArrays(1, &LanderVertexArrayID);
+ glBindVertexArray(LanderVertexArrayID);
+
+ //creating a buffer
+
+ GLuint LanderVertexBuffer;
+ glGenBuffers(1, &LanderVertexBuffer);
+ glBindBuffer(GL_ARRAY_BUFFER, LanderVertexBuffer);
+ glBufferData(GL_ARRAY_BUFFER, numSegments*sizeof(float), &landerVerts[0], GL_STATIC_DRAW);
+glEnableVertexAttribArray(0);
+glVertexAttribPointer(0, numSegments*2, GL_FLOAT, GL_FALSE, 0,(void*)0);
+
 }
 
 
@@ -74,6 +89,13 @@ void Lander::draw( mat4 &worldToViewTransform )
 
 {
   // YOUR CODE HERE
+	
+	glBindVertexArray( LanderVertexArrayID );
+	glUniformMatrix4fv( glGetUniformLocation( myGPUProgram->id(), "MVP"), 1, GL_TRUE, &worldToViewTransform[0][0] );
+
+  glLineWidth( 2.0 );
+	glDrawArrays(GL_LINE_STRIP,0,numSegments*2);
+
 }
 
 
