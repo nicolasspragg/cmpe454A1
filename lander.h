@@ -19,7 +19,7 @@ class Lander {
 
   vec3 position;		// position in world coordinates (m)
   vec3 velocity;		// velocity in world coordinates (m/s)
-
+  int fuel = 4000;
   float orientation;		// orientation (radians CCW)
   float angularVelocity;	// angular velocity (radians/second CCW)
 
@@ -53,7 +53,7 @@ class Lander {
   void addThrust( float deltaT );
 
   vec3 centrePosition() { return position; }
-
+  int getFuel() { return fuel; }
   float speed() { return velocity.length(); }
 };
 
