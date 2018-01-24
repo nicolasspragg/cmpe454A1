@@ -14,7 +14,7 @@
 // We also have rotation without rotational inertia (as in the
 // original game).
 
-#define ROTATION_SPEED 0.4              // upon sidewise thrust, rotation speed in radians/second
+#define ROTATION_SPEED 0.8	          // upon sidewise thrust, rotation speed in radians/second
 #define THRUST_ACCEL 4.0                  // upon main thrust, acceleration in m/s/s
 #define GRAVITY vec3( 0, -1.6, 0 ) // gravity acceleration on the moon is 1.6 m/s/s
 #define LANDER_WIDTH 6.7                  // the real lander is about 6.7 m wide
@@ -42,15 +42,15 @@ void Lander::setupVAO()
   }
 
   numSegments = i/2;
- 
-          // number of segments in the lander model
+  
+  		// number of segments in the lander model
 
   // Rewrite the model vertices so that the lander is centred at (0,0)
   // and has width LANDER_WIDTH.
   //
   // Also, invert the y axis since the original vertices are defined
   // in a coordinate system with y increasing downward.
- 
+  
 
   float s = LANDER_WIDTH / (max.x - min.x);
  
@@ -65,7 +65,7 @@ void Lander::setupVAO()
   // ---- Create a VAO for this object ----
 
   // YOUR CODE HERE
- 
+  
  glGenVertexArrays(1, &VAO);
  glBindVertexArray(VAO);
 
@@ -96,10 +96,10 @@ void Lander::draw( mat4 &worldToViewTransform )
 
   glBindVertexArray( VAO );
 
-    glUniformMatrix4fv( glGetUniformLocation( myGPUProgram->id(), "MVP"), 1, GL_TRUE, &M[0][0] );
- 
+	glUniformMatrix4fv( glGetUniformLocation( myGPUProgram->id(), "MVP"), 1, GL_TRUE, &M[0][0] );
+  
   glLineWidth( 2.0 );
-    glDrawArrays(GL_LINE_STRIP, 0, numSegments);
+	glDrawArrays(GL_LINE_STRIP, 0, numSegments);
 
 }
 
@@ -144,6 +144,14 @@ void Lander::addThrust( float deltaT )
 
 {
   // YOUR CODE HERE
+  // convert orientation (radians) into a vector, to add on to the velocity
+  // subtract 90 degrees because lander starts facing up, not facing rightwards
+  // use negative cos and sin because the thrust goes in the opposite direction of the orientation
+  vec3 orientationVector = vec3(-cos(orientation-M_PI/2)/THRUST_ACCEL, -sin(orientation-M_PI/2)/THRUST_ACCEL, 0);
+  if (Lander::fuel > 0) {
+    velocity = velocity + orientationVector;
+    Lander::fuel -= deltaT*0.5;
+  }
 }
 
 
@@ -189,3 +197,4 @@ float Lander::landerVerts[] = {
 
   -1
 };
+

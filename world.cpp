@@ -69,7 +69,7 @@ void World::draw()
     // Find the world-to-view transform that is centred on the lander
     // and is ZOOM_WIDTH wide (in world coordinates).
     // YOUR CODE HERE
-    float s = 0.5*ZOOM_RADIUS / (landscape->maxX() - landscape->minX());
+    float s = 0.25*ZOOM_RADIUS / (landscape->maxX() - landscape->minX());
 
     worldToViewTransform
       = scale( s, s, 1 )
@@ -97,4 +97,8 @@ void World::draw()
   drawStrokeString( ss.str(), -0.95, 0.75, 0.06, glGetUniformLocation( myGPUProgram->id(), "MVP") );
 
   // YOUR CODE HERE (modify the above code, too)
+
+  stringstream fuelStream;
+  fuelStream << "Fuel amount: " << lander->getFuel() << " L";
+  drawStrokeString( fuelStream.str(),-0.95, 0.45, 0.06, glGetUniformLocation( myGPUProgram->id(), "MVP") );
 }
