@@ -65,10 +65,15 @@ void World::draw()
       * translate( -landscape->minX(), -landscape->minY(), 0 );
 
   } else {
-
+    // cout << "zoomed";
     // Find the world-to-view transform that is centred on the lander
     // and is ZOOM_WIDTH wide (in world coordinates).
     // YOUR CODE HERE
+    float s = 0.5*ZOOM_RADIUS / (landscape->maxX() - landscape->minX());
+
+    worldToViewTransform
+      = scale( s, s, 1 )
+      * translate( -lander->centrePosition()[0], -lander->centrePosition()[1], 0 );
  
   }
 

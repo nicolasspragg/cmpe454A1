@@ -37,7 +37,7 @@ void Landscape::setupVAO()
 
   // Translate the landscape so that its lower-left corner is at (0,0)
   // and its width is LANDSCAPE_WIDTH and y increases upward.
-  // 
+  //
   // Note that y increases downward in the model, so the y axis must
   // be inverted.
 
@@ -63,7 +63,7 @@ void Landscape::setupVAO()
     landscapeVerts[i+1] = newV.y / newV.w;
 
     // prevent the landscape from going backward
-    
+   
     if (landscapeVerts[i] < prevX)
       landscapeVerts[i] = prevX;
 
@@ -120,8 +120,45 @@ vec3 Landscape::findClosestPoint( vec3 position, vec3 segTail, vec3 segHead )
   // range.
 
   // YOUR CODE HERE
+  vec3 projection;
+  vec3 segment;
 
-  return vec3(0,0,0);
+  segment.x = segTail.x - segHead.x;
+  segment.y = segTail.y - segHead.y;
+
+  float positionDotSegment = position.x * segment.x + position.y * segment.y;
+  float magnitudeSegmentSquared = segment.x * segment.x + segment.y * segment.y;
+  float fraction = positionDotSegment / magnitudeSegmentSquared;
+
+  projection.x = fraction * segment.x;
+  projection.y = fraction * segment.y;
+
+  // we have the projection but now we have to check if it is in range
+  // (if the tip of the vector is between the two points)
+  // if not, find closest end
+  if (projection.x >= segTail.x) {
+    if (projection.x < segHead.x) {
+      // return projection; // do nothing
+    } else {
+      return segHead;
+    }
+  } else {
+    if (projection.x > segHead.x) {
+      // return projection; // do nothing
+    } else {
+      return segTail;
+    }
+  }
+
+  // cout << projection.x;
+  // cout << "\n";
+  // cout << projection.y;
+  // cout << "\n";
+  // cout << segment;
+  // cout << "\n";
+
+  return projection;
+  // return vec3(0,0,0);
 }
 
 
@@ -139,8 +176,8 @@ vec3 Landscape::findClosestPoint( vec3 position )
   for (int i=0; i<numVerts-1; i++) {
 
     vec3 thisClosestPoint = findClosestPoint( position,
-					      vec3( landscapeVerts[2*i], landscapeVerts[2*i+1], 0 ),
-					      vec3( landscapeVerts[2*(i+1)], landscapeVerts[2*(i+1)+1], 0 ) );
+                          vec3( landscapeVerts[2*i], landscapeVerts[2*i+1], 0 ),
+                          vec3( landscapeVerts[2*(i+1)], landscapeVerts[2*(i+1)+1], 0 ) );
 
     float thisSquaredDistance = (thisClosestPoint - position) * (thisClosestPoint - position);
 
@@ -154,7 +191,7 @@ vec3 Landscape::findClosestPoint( vec3 position )
 }
 
 
-  
+ 
 // Landscape model consisting of a path of segments
 //
 // These are in a ARBITRARY coordinate system and get remapped to the
