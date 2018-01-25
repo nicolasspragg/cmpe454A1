@@ -25,6 +25,9 @@ class Lander {
 
   float worldMaxX, worldMaxY;	// world dimensions
 
+  float horizSpeed;
+  float vertSpeed;
+
  public:
 
   Lander( float maxX, float maxY ) {
@@ -55,6 +58,8 @@ class Lander {
   vec3 centrePosition() { return position; }
   int getFuel() { return fuel; }
   float speed() { return velocity.length(); }
+  float getHorizSpeed() { return velocity[0];}
+  float getVertSpeed() { return velocity[1];}
 };
 
 

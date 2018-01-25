@@ -151,6 +151,8 @@ void Lander::addThrust( float deltaT )
   if (Lander::fuel > 0) {
     velocity = velocity + orientationVector;
     Lander::fuel -= deltaT*0.5;
+    Lander::horizSpeed = velocity[0];
+    Lander::vertSpeed = velocity[1];
   }
 }
 

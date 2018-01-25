@@ -99,6 +99,33 @@ void World::draw()
   // YOUR CODE HERE (modify the above code, too)
 
   stringstream fuelStream;
-  fuelStream << "Fuel amount: " << lander->getFuel() << " L";
-  drawStrokeString( fuelStream.str(),-0.95, 0.45, 0.06, glGetUniformLocation( myGPUProgram->id(), "MVP") );
+  fuelStream << "Fuel amount: " << lander->getFuel() << " L!";
+  drawStrokeString( fuelStream.str(),-0.95, 0.65, 0.06, glGetUniformLocation( myGPUProgram->id(), "MVP") );
+
+string hArrowState = "";
+
+if(lander->getHorizSpeed() < 0){
+  hArrowState = " <--- ";
+} else {
+  hArrowState = " ---> ";
+}
+
+
+string vArrowState = "";
+
+if(lander->getVertSpeed() < 0){
+  vArrowState = " ^ ";
+} else {
+  vArrowState = " V ";
+}
+
+
+  stringstream horizSpeedStream;
+  horizSpeedStream <<"Horizontal Speed " <<lander->getHorizSpeed() << " M/S" << hArrowState;
+  drawStrokeString( horizSpeedStream.str(),-0.95, 0.55, 0.06, glGetUniformLocation( myGPUProgram->id(), "MVP") );
+
+  stringstream vertSpeedStream;
+  vertSpeedStream <<"Vertical Speed " <<lander->getVertSpeed() << " M/S" << vArrowState;
+  drawStrokeString( vertSpeedStream.str(),-0.95, 0.45, 0.06, glGetUniformLocation( myGPUProgram->id(), "MVP") );
+
 }
