@@ -7,6 +7,8 @@
 #include "gpuProgram.h"
 #include "strokefont.h"
 
+#include <time.h> 
+
 #include <sstream>
 
 
@@ -113,7 +115,7 @@ if(lander->getHorizSpeed() < 0){
 
 string vArrowState = "";
 
-if(lander->getVertSpeed() < 0){
+if(lander->getVertSpeed() > 0){
   vArrowState = " ^ ";
 } else {
   vArrowState = " V ";
@@ -127,5 +129,26 @@ if(lander->getVertSpeed() < 0){
   stringstream vertSpeedStream;
   vertSpeedStream <<"Vertical Speed " <<lander->getVertSpeed() << " M/S" << vArrowState;
   drawStrokeString( vertSpeedStream.str(),-0.95, 0.45, 0.06, glGetUniformLocation( myGPUProgram->id(), "MVP") );
+
+//------------------------MARK TIMER----------------------------------
+  clock_t timer = clock();
+
+  int seconds = timer / CLOCKS_PER_SEC;
+  
+  if(seconds > 60 ) { seconds = 0;}
+  int minutes = seconds/60;
+  
+
+  
+
+ 
+
+  stringstream timerStream;
+
+  timerStream <<"Seconds elapsed " << minutes << " : " << seconds;
+
+  drawStrokeString( timerStream.str(),-0.95, 0.35, 0.06, glGetUniformLocation( myGPUProgram->id(), "MVP") );
+
+
 
 }
