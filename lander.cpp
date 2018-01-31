@@ -129,16 +129,22 @@ void Lander::updatePose( float deltaT )
 void Lander::rotateCW( float deltaT )
 
 {
-  orientation -= ROTATION_SPEED * deltaT;
-  Lander::fuel -= deltaT*0.02;
+ if(Lander::fuel > 0){
+   orientation -= ROTATION_SPEED * deltaT;
+   Lander::fuel -= 0.05;
+ }
+ 
 }
 
 
 void Lander::rotateCCW( float deltaT )
 
 {
-  orientation += ROTATION_SPEED * deltaT;
-  Lander::fuel -= deltaT * 0.02;
+  if(Lander::fuel > 0 ){
+    orientation += ROTATION_SPEED * deltaT;
+    Lander::fuel -= 0.05;
+  }
+ 
 }
 
 
@@ -152,7 +158,7 @@ void Lander::addThrust( float deltaT )
   vec3 orientationVector = vec3(-cos(orientation-M_PI/2)/THRUST_ACCEL, -sin(orientation-M_PI/2)/THRUST_ACCEL, 0);
   if (Lander::fuel > 0) {
     velocity = velocity + orientationVector;
-   // Lander::fuel -= deltaT*0.5;
+   Lander::fuel -= 0.1;
     Lander::horizSpeed = velocity[0];
     Lander::vertSpeed = velocity[1];
   }
