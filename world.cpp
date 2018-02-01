@@ -34,6 +34,8 @@ void World::updateState( float elapsedTime )
 
   vec3 closestTerrainPoint = landscape->findClosestPoint( lander->centrePosition() );
   float closestDistance = ( closestTerrainPoint - lander->centrePosition() ).length();
+  cout << closestDistance;
+  cout << "\n";
 
   // Find if the view should be zoomed
 
@@ -42,6 +44,16 @@ void World::updateState( float elapsedTime )
   // Check for landing or collision and let the user know
 
   // YOUR CODE HERE
+  if (closestDistance <= 5){
+    // cout << "collision";
+    // use absolute value to cover both left and right directions
+    if (abs(lander->getHorizSpeed()) <= 0.5 && lander->getVertSpeed() <= 1) {
+      cout << "WIN";
+    }
+    else {
+      cout << "LOSE";
+    }
+  }
 }
 
 
@@ -104,22 +116,22 @@ void World::draw()
   fuelStream << "Fuel amount: " << lander->getFuel() << " L!";
   drawStrokeString( fuelStream.str(),-0.95, 0.65, 0.06, glGetUniformLocation( myGPUProgram->id(), "MVP") );
 
-string hArrowState = "";
+  string hArrowState = "";
 
-if(lander->getHorizSpeed() < 0){
-  hArrowState = " <--- ";
-} else {
-  hArrowState = " ---> ";
-}
+  if(lander->getHorizSpeed() < 0){
+    hArrowState = " <--- ";
+  } else {
+    hArrowState = " ---> ";
+  }
 
 
-string vArrowState = "";
+  string vArrowState = "";
 
-if(lander->getVertSpeed() > 0){
-  vArrowState = " ^ ";
-} else {
-  vArrowState = " V ";
-}
+  if(lander->getVertSpeed() > 0){
+    vArrowState = " ^ ";
+  } else {
+    vArrowState = " V ";
+  }
 
 
   stringstream horizSpeedStream;

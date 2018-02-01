@@ -15,7 +15,7 @@
 // original game).
 
 #define ROTATION_SPEED 1	          // upon sidewise thrust, rotation speed in radians/second
-#define THRUST_ACCEL 0.75                  // upon main thrust, acceleration in m/s/s
+#define THRUST_ACCEL 0.5                  // upon main thrust, acceleration in m/s/s
 #define GRAVITY vec3( 0, -1.6, 0 ) // gravity acceleration on the moon is 1.6 m/s/s
 #define LANDER_WIDTH 6.7                  // the real lander is about 6.7 m wide
 
@@ -100,6 +100,7 @@ void Lander::draw( mat4 &worldToViewTransform )
   
   glLineWidth( 2.0 );
 	glDrawArrays(GL_LINE_STRIP, 0, numSegments);
+  glBindVertexArray( VAO );
 
 }
 
@@ -155,6 +156,7 @@ void Lander::addThrust( float deltaT )
   // convert orientation (radians) into a vector, to add on to the velocity
   // subtract 90 degrees because lander starts facing up, not facing rightwards
   // use negative cos and sin because the thrust goes in the opposite direction of the orientation
+
   vec3 orientationVector = vec3(-cos(orientation-M_PI/2)*THRUST_ACCEL, -sin(orientation-M_PI/2)*THRUST_ACCEL, 0);
   if (Lander::fuel > 0) {
     velocity = velocity + orientationVector;
