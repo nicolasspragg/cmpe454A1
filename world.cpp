@@ -11,10 +11,10 @@
 
 #include <sstream>
 
-
 void World::updateState( float elapsedTime )
 
 {
+
   // See if any keys are pressed for thrust
 
   if (glfwGetKey( window, GLFW_KEY_RIGHT ) == GLFW_PRESS) // right arrow
@@ -53,6 +53,15 @@ void World::updateState( float elapsedTime )
     else {
       cout << "LOSE";
     }
+    lander->setCollided();
+  }
+  // if the lander has collided, pause execution
+  if (lander->getCollided()) {
+    stringstream test;
+    test << "test";
+    drawStrokeString( test.str(), lander->centrePosition()[0], lander->centrePosition()[1], 100, glGetUniformLocation( myGPUProgram->id(), "MVP") );
+    sleep(5);
+    exit(0);
   }
 }
 
