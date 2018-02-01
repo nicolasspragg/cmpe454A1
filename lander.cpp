@@ -15,7 +15,7 @@
 // original game).
 
 #define ROTATION_SPEED 1	          // upon sidewise thrust, rotation speed in radians/second
-#define THRUST_ACCEL 0.5                  // upon main thrust, acceleration in m/s/s
+#define THRUST_ACCEL 0.25                  // upon main thrust, acceleration in m/s/s
 #define GRAVITY vec3( 0, -1.6, 0 ) // gravity acceleration on the moon is 1.6 m/s/s
 #define LANDER_WIDTH 6.7                  // the real lander is about 6.7 m wide
 
