@@ -136,8 +136,6 @@ vec3 Landscape::findClosestPoint( vec3 position, vec3 segTail, vec3 segHead )
   // we have the projection but now we have to check if it is in range
   // (if the tip of the vector is between the two points)
   // if not, find closest end
-
-  /*
   if (projection.x >= segTail.x) {
     if (projection.x < segHead.x) {
       // return projection; // do nothing
@@ -151,22 +149,17 @@ vec3 Landscape::findClosestPoint( vec3 position, vec3 segTail, vec3 segHead )
       return segTail;
     }
   }
-  */
-  
 
-  if (projection.x >= segTail.x && projection.x > segHead.x) {
-    return segHead;
-  } else if (projection.x < segHead.x) {
-    return segTail;
-  } else {
-    return projection;
-  }
-
-
-
+  // cout << projection.x;
+  // cout << "\n";
+  // cout << projection.y;
+  // cout << "\n";
+  // cout << segment;
+  // cout << "\n";
 
   return projection;
-  
+  // return vec3(0,0,0);
+
 }
 
 
@@ -196,6 +189,10 @@ vec3 Landscape::findClosestPoint( vec3 position )
   }
 
   return closestPoint;
+}
+
+float findAltitude(){
+  return 0.0;
 }
 
 

@@ -19,7 +19,7 @@ class Lander {
 
   vec3 position;		// position in world coordinates (m)
   vec3 velocity;		// velocity in world coordinates (m/s)
-  float fuel = 4000;
+  float fuel = 1000;
   float orientation;		// orientation (radians CCW)
   float angularVelocity;	// angular velocity (radians/second CCW)
 
@@ -29,6 +29,8 @@ class Lander {
   float vertSpeed;
 
   bool collided = false;
+
+  float altitude;
 
 
  public:
@@ -40,6 +42,12 @@ class Lander {
  }
  void unSetCollided() {
   collided = false;
+ }
+ void setAltitude(float alt){
+  altitude = alt;
+ }
+ float getAltitude(){
+  return altitude;
  }
 
   Lander( float maxX, float maxY ) {

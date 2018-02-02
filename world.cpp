@@ -51,15 +51,11 @@ void World::updateState( float elapsedTime )
     // cout << "collision";
     // use absolute value to cover both left and right directions
     if (abs(lander->getHorizSpeed()) <= 0.5 && lander->getVertSpeed() <= 1) {
-      cout << "\n";
-      cout << "WIN!!!";
-      cout << "\n";
+      // cout << "WIN!!!";
       gameWon = true;
     }
     else {
-      cout << "\n";
-      cout << "LOSE!!!";
-      cout << "\n";
+      // cout << "LOSE!!!";
       gameWon = false;
     }
     lander->setCollided();
@@ -139,7 +135,7 @@ void World::draw()
   // YOUR CODE HERE (modify the above code, too)
 
   stringstream ss2;
-  ss2 << "POINTS: " << world->getPoints();
+  ss2 << "SCORE: " << world->getPoints();
   drawStrokeString( ss2.str(), 0.6, 0.75, 0.06, glGetUniformLocation( myGPUProgram->id(), "MVP") );
 
   stringstream fuelStream;
@@ -165,7 +161,7 @@ void World::draw()
 
 
   stringstream horizSpeedStream;
-  horizSpeedStream <<"Horizontal Speed " <<lander->getHorizSpeed() << " M/S" << hArrowState;
+  horizSpeedStream <<"Horizontal Speed " << abs(lander->getHorizSpeed()) << " M/S" << hArrowState;
   drawStrokeString( horizSpeedStream.str(),-0.95, 0.55, 0.06, glGetUniformLocation( myGPUProgram->id(), "MVP") );
 
   stringstream vertSpeedStream;
@@ -175,19 +171,15 @@ void World::draw()
 //------------------------MARK TIMER----------------------------------
   clock_t timer = clock();
 
-  int seconds = timer / CLOCKS_PER_SEC;
-  
-  if(seconds > 60 ) { seconds = 0;}
-  int minutes = seconds/60;
-  
+  int realSeconds = timer / CLOCKS_PER_SEC;
+  int seconds = realSeconds%60;
 
-  
-
+  int minutes = realSeconds/60;
  
 
   stringstream timerStream;
 
-  timerStream <<"Seconds elapsed " << minutes << " : " << seconds;
+  timerStream <<"Time elapsed " << minutes << " : " << seconds;
 
   drawStrokeString( timerStream.str(),-0.95, 0.35, 0.06, glGetUniformLocation( myGPUProgram->id(), "MVP") );
 
@@ -200,7 +192,7 @@ void World::draw()
       gameOver << "Crash landing! +0 points";
     }
     // drawStrokeString( test.str(), lander->centrePosition()[0], lander->centrePosition()[1], 0.06, glGetUniformLocation( myGPUProgram->id(), "MVP") );
-    drawStrokeString( gameOver.str(), -0.95, 0.25, 0.09, glGetUniformLocation( myGPUProgram->id(), "MVP") );
+    drawStrokeString( gameOver.str(), -0.95, -0.75, 0.09, glGetUniformLocation( myGPUProgram->id(), "MVP") );
   }
   
 
