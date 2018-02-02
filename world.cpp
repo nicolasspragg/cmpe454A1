@@ -10,6 +10,7 @@
 #include <time.h> 
 
 #include <sstream>
+#include <iomanip>
 
 bool endGame = false;
 bool gameWon = false;
@@ -179,7 +180,7 @@ void World::draw()
 
   stringstream timerStream;
 
-  timerStream <<"Time elapsed " << minutes << " : " << seconds;
+  timerStream <<"Time elapsed " << minutes << " : " << setfill('0') << setw(2) << seconds;
 
   drawStrokeString( timerStream.str(),-0.95, 0.35, 0.06, glGetUniformLocation( myGPUProgram->id(), "MVP") );
 
