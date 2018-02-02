@@ -28,7 +28,16 @@ class Lander {
   float horizSpeed;
   float vertSpeed;
 
+  bool collided = false;
+
+
  public:
+ void setCollided() {
+   collided = true;
+ }
+ bool getCollided() {
+   return collided;
+ }
 
   Lander( float maxX, float maxY ) {
     worldMaxX = maxX;

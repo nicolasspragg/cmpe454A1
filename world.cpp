@@ -11,6 +11,9 @@
 
 #include <sstream>
 
+bool endGame = false;
+bool gameWon = false;
+
 void World::updateState( float elapsedTime )
 
 {
@@ -34,8 +37,8 @@ void World::updateState( float elapsedTime )
 
   vec3 closestTerrainPoint = landscape->findClosestPoint( lander->centrePosition() );
   float closestDistance = ( closestTerrainPoint - lander->centrePosition() ).length();
-  cout << closestDistance;
-  cout << "\n";
+  // cout << closestDistance;
+  // cout << "\n";
 
   // Find if the view should be zoomed
 
@@ -48,20 +51,31 @@ void World::updateState( float elapsedTime )
     // cout << "collision";
     // use absolute value to cover both left and right directions
     if (abs(lander->getHorizSpeed()) <= 0.5 && lander->getVertSpeed() <= 1) {
-      cout << "WIN";
+      cout << "\n";
+      cout << "WIN!!!";
+      cout << "\n";
+      gameWon = true;
     }
     else {
-      cout << "LOSE";
+      cout << "\n";
+      cout << "LOSE!!!";
+      cout << "\n";
+      gameWon = false;
     }
     lander->setCollided();
   }
   // if the lander has collided, pause execution
   if (lander->getCollided()) {
-    stringstream test;
-    test << "test";
-    drawStrokeString( test.str(), lander->centrePosition()[0], lander->centrePosition()[1], 100, glGetUniformLocation( myGPUProgram->id(), "MVP") );
-    sleep(5);
-    exit(0);
+    if (endGame){ // this allows one more loop to draw changes
+      sleep(5);
+      exit(0);
+    }
+    else {
+      // this part is where we can notify the user of the result of the game
+
+      
+      endGame = true;
+    }
   }
 }
 
@@ -170,6 +184,16 @@ void World::draw()
 
   drawStrokeString( timerStream.str(),-0.95, 0.35, 0.06, glGetUniformLocation( myGPUProgram->id(), "MVP") );
 
-
+  if (endGame == true) {
+    stringstream gameOver;
+    if (gameWon) {
+      gameOver << "You win!";
+    } else {
+      gameOver << "You lose!";
+    }
+    // drawStrokeString( test.str(), lander->centrePosition()[0], lander->centrePosition()[1], 0.06, glGetUniformLocation( myGPUProgram->id(), "MVP") );
+    drawStrokeString( gameOver.str(), -0.95, 0.25, 0.12, glGetUniformLocation( myGPUProgram->id(), "MVP") );
+  }
+  
 
 }
