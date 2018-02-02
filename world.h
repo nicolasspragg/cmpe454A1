@@ -20,6 +20,7 @@ class World {
   Lander    *lander;
   bool       zoomView; // show zoomed view when lander is close to landscape
   GLFWwindow *window;
+  int points = 0;
 
  public:
 
@@ -45,6 +46,8 @@ class World {
 
   float minY() { return 0; }
   float maxY() { return (landscape->maxX() - landscape->minX()) / SCREEN_ASPECT * (2 - BOTTOM_SPACE) / 2; }
+  void addPoint() { points += 1; }
+  int getPoints() { return points; }
 };
 
 

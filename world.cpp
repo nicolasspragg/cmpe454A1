@@ -138,6 +138,10 @@ void World::draw()
 
   // YOUR CODE HERE (modify the above code, too)
 
+  stringstream ss2;
+  ss2 << "POINTS: " << world->getPoints();
+  drawStrokeString( ss2.str(), 0.6, 0.75, 0.06, glGetUniformLocation( myGPUProgram->id(), "MVP") );
+
   stringstream fuelStream;
   fuelStream << "Fuel amount: " << lander->getFuel() << " L!";
   drawStrokeString( fuelStream.str(),-0.95, 0.65, 0.06, glGetUniformLocation( myGPUProgram->id(), "MVP") );
@@ -190,12 +194,13 @@ void World::draw()
   if (endGame == true) {
     stringstream gameOver;
     if (gameWon) {
-      gameOver << "You win!";
+      gameOver << "Landed safely! +1 point";
+      world->addPoint();
     } else {
-      gameOver << "You lose!";
+      gameOver << "Crash landing! +0 points";
     }
     // drawStrokeString( test.str(), lander->centrePosition()[0], lander->centrePosition()[1], 0.06, glGetUniformLocation( myGPUProgram->id(), "MVP") );
-    drawStrokeString( gameOver.str(), -0.95, 0.25, 0.12, glGetUniformLocation( myGPUProgram->id(), "MVP") );
+    drawStrokeString( gameOver.str(), -0.95, 0.25, 0.09, glGetUniformLocation( myGPUProgram->id(), "MVP") );
   }
   
 
