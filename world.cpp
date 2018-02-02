@@ -67,8 +67,11 @@ void World::updateState( float elapsedTime )
   // if the lander has collided, pause execution
   if (lander->getCollided()) {
     if (endGame){ // this allows one more loop to draw changes
-      sleep(5);
-      exit(0);
+      sleep(2);
+      lander->reset();
+      endGame = false;
+      lander->unSetCollided();
+      // exit(0);
     }
     else {
       // this part is where we can notify the user of the result of the game

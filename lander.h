@@ -38,6 +38,9 @@ class Lander {
  bool getCollided() {
    return collided;
  }
+ void unSetCollided() {
+  collided = false;
+ }
 
   Lander( float maxX, float maxY ) {
     worldMaxX = maxX;
