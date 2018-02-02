@@ -3,6 +3,7 @@
 
 #include "headers.h"
 #include "landscape.h"
+#include "lander.h"
 #include "gpuProgram.h"
 #include "ll.h"
 
@@ -191,8 +192,27 @@ vec3 Landscape::findClosestPoint( vec3 position )
   return closestPoint;
 }
 
-float findAltitude(){
-  return 0.0;
+float Landscape::findAltitude(float landerX, float landerY){
+  // find the segment the lander is directly above
+  int segLeftIndex = 0;
+  for (int i=0; i<numVerts-1; i+=2) {
+    if (landerX >= landscapeVerts[i] && landerX <= landscapeVerts[i+2]){
+      segLeftIndex = i;
+    }
+  }
+
+  // find the midpoint of that segment (specifically the y-coordinate)
+  // use the midpoint formula
+  // float x1 = landscapeVerts[segLeftIndex];
+  // float x2 = landscapeVerts[segLeftIndex+2];
+  float y1 = landscapeVerts[segLeftIndex+1];
+  float y2 = landscapeVerts[segLeftIndex+3];
+  float midpointY = (y1+y2)/2;
+
+  // find the difference in heights of the lander and the segment midpoint
+  float altitude = landerY - midpointY;
+
+  return altitude;
 }
 
 

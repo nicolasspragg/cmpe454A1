@@ -11,6 +11,7 @@
 
 
 #include "headers.h"
+#include "lander.h"
 
 
 #define LANDSCAPE_WIDTH 1000.0	// Width of landscape in meters
@@ -30,6 +31,7 @@ class Landscape {
     setupVAO();
   }
 
+
   void setupVAO();  
 
   void draw( mat4 &worldToViewTransform );
@@ -40,6 +42,7 @@ class Landscape {
 
   vec3 findClosestPoint( vec3 position, vec3 segTail, vec3 segHead );
   vec3 findClosestPoint( vec3 position );
+  float findAltitude(float xCoord, float yCoord);
 };
 
 

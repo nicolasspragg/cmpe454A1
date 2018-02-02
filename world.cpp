@@ -184,6 +184,13 @@ void World::draw()
 
   drawStrokeString( timerStream.str(),-0.95, 0.35, 0.06, glGetUniformLocation( myGPUProgram->id(), "MVP") );
 
+  stringstream altitudeStream;
+  float altitude = landscape->findAltitude(lander->centrePosition()[0],lander->centrePosition()[1]) - 5.0;
+  if (altitude < 0) { altitude = 0; } // it can sometimes go slightly below due to the -5 offset
+  altitudeStream << "Altitude: " << altitude;
+
+  drawStrokeString( altitudeStream.str(), -0.95, 0.25, 0.06, glGetUniformLocation( myGPUProgram->id(), "MVP") );
+
   if (endGame == true) {
     stringstream gameOver;
     if (gameWon) {
