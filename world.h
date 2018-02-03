@@ -47,7 +47,14 @@ class World {
   float minY() { return 0; }
   float maxY() { return (landscape->maxX() - landscape->minX()) / SCREEN_ASPECT * (2 - BOTTOM_SPACE) / 2; }
   void addPoint() { points += 1; }
+  void removePoint() { points -= 1; }
   int getPoints() { return points; }
+
+  vec3 alien;
+  float newAlienX() {
+    srand(time(NULL));
+    return ((float)rand()/RAND_MAX);
+  }
 };
 
 
