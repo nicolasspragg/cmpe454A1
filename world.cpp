@@ -15,6 +15,10 @@
 bool endGame = false;
 bool gameWon = false;
 
+float alienX = world->newAlienX();
+float alienDrop = 0;
+float oneMoreLoop = false;
+
 void World::updateState( float elapsedTime )
 
 {
@@ -128,7 +132,7 @@ void World::draw()
   ss.precision(1);
 
   ss << "SPEED " << lander->speed() << " m/s";
-  drawStrokeString( ss.str(), -0.95, 0.75, 0.06, glGetUniformLocation( myGPUProgram->id(), "MVP") );
+  drawStrokeString( ss.str(), -0.95, 0.75, 0.04, glGetUniformLocation( myGPUProgram->id(), "MVP") );
 
   // YOUR CODE HERE (modify the above code, too)
 
@@ -140,7 +144,7 @@ void World::draw()
   float fuelRemaining = lander->getFuel();
   if (fuelRemaining < 0) { fuelRemaining = 0; }
   fuelStream << "Fuel amount: " << fuelRemaining << " L!";
-  drawStrokeString( fuelStream.str(),-0.95, 0.65, 0.06, glGetUniformLocation( myGPUProgram->id(), "MVP") );
+  drawStrokeString( fuelStream.str(),-0.95, 0.65, 0.04, glGetUniformLocation( myGPUProgram->id(), "MVP") );
 
   string hArrowState = "";
 
@@ -162,11 +166,11 @@ void World::draw()
 
   stringstream horizSpeedStream;
   horizSpeedStream <<"Horizontal Speed " << abs(lander->getHorizSpeed()) << " M/S" << hArrowState;
-  drawStrokeString( horizSpeedStream.str(),-0.95, 0.55, 0.06, glGetUniformLocation( myGPUProgram->id(), "MVP") );
+  drawStrokeString( horizSpeedStream.str(),-0.95, 0.55, 0.04, glGetUniformLocation( myGPUProgram->id(), "MVP") );
 
   stringstream vertSpeedStream;
   vertSpeedStream <<"Vertical Speed " <<lander->getVertSpeed() << " M/S" << vArrowState;
-  drawStrokeString( vertSpeedStream.str(),-0.95, 0.45, 0.06, glGetUniformLocation( myGPUProgram->id(), "MVP") );
+  drawStrokeString( vertSpeedStream.str(),-0.95, 0.45, 0.04, glGetUniformLocation( myGPUProgram->id(), "MVP") );
 
 //------------------------MARK TIMER----------------------------------
   clock_t timer = clock();
@@ -181,19 +185,27 @@ void World::draw()
 
   timerStream <<"Time elapsed " << minutes << " : " << setfill('0') << setw(2) << seconds;
 
-  drawStrokeString( timerStream.str(),-0.95, 0.35, 0.06, glGetUniformLocation( myGPUProgram->id(), "MVP") );
+  drawStrokeString( timerStream.str(),-0.95, 0.35, 0.04, glGetUniformLocation( myGPUProgram->id(), "MVP") );
 
   stringstream altitudeStream;
   float altitude = landscape->findAltitude(lander->centrePosition()[0],lander->centrePosition()[1]) - 5.0;
   if (altitude < 0) { altitude = 0; } // it can sometimes go slightly below due to the -5 offset
   altitudeStream << "Altitude: " << altitude;
+  drawStrokeString( altitudeStream.str(), -0.95, 0.25, 0.04, glGetUniformLocation( myGPUProgram->id(), "MVP") );
 
-  drawStrokeString( altitudeStream.str(), -0.95, 0.25, 0.06, glGetUniformLocation( myGPUProgram->id(), "MVP") );
+  stringstream neutralize;
+  neutralize << "neutralize: [*]";
+  drawStrokeString( neutralize.str(), 0.55, 0.85, 0.04, glGetUniformLocation( myGPUProgram->id(), "MVP") );
+
 
   if (endGame == true) {
     stringstream gameOver;
     if (gameWon) {
-      gameOver << "Landed safely! +1 point";
+      gameOver << "Landed safely! +5 points";
+      world->addPoint();
+      world->addPoint();
+      world->addPoint();
+      world->addPoint();
       world->addPoint();
     } else {
       gameOver << "Crash landing! +0 points";
@@ -201,6 +213,44 @@ void World::draw()
     // drawStrokeString( test.str(), lander->centrePosition()[0], lander->centrePosition()[1], 0.06, glGetUniformLocation( myGPUProgram->id(), "MVP") );
     drawStrokeString( gameOver.str(), -0.95, -0.75, 0.09, glGetUniformLocation( myGPUProgram->id(), "MVP") );
   }
-  
+
+  stringstream alienBarrier;
+  alienBarrier << "atmosphere---------------------------------------------------------------------------------------------------";
+
+  stringstream alienString;
+  alienString << "<(X)>";
+  if (!zoomView) {
+    drawStrokeString(alienBarrier.str(), -1, 0, 0.03, glGetUniformLocation( myGPUProgram->id(), "MVP") );
+    drawStrokeString(alienString.str(), alienX, 0.65-alienDrop, 0.015, glGetUniformLocation( myGPUProgram->id(), "MVP") );
+  }
+  // backwards logic because it needs one more loop to display text
+  if (oneMoreLoop == true){
+    oneMoreLoop = false;
+    sleep(2);
+    if (alienDrop >= 0.65){
+      world->removePoint();
+    } else {
+      world->addPoint();
+    }
+    alienDrop = 0;
+  }
+  if (alienDrop >= 0.65){ //alien entered atmosphere
+    oneMoreLoop = true;
+    alienX = newAlienX();
+    stringstream msg;
+    msg << "Virus entered atmosphere! -1 point";
+    drawStrokeString( msg.str(), -0.95, -0.1, 0.07, glGetUniformLocation( myGPUProgram->id(), "MVP") );
+  }
+  cout <<lander->centrePosition()[0] << "   " << lander->centrePosition()[1] << "\n";
+  if (lander->centrePosition()[0]>=(960) && lander->centrePosition()[0]<=(964)){
+    if (lander->centrePosition()[1]>=(874) && lander->centrePosition()[1]<=(878)){
+      stringstream msg;
+      msg << "Virus destroyed! +1 point";
+      drawStrokeString( msg.str(), -0.95, -0.1, 0.07, glGetUniformLocation( myGPUProgram->id(), "MVP") );
+      oneMoreLoop = true;
+      lander->reset();
+    }
+  }
+  alienDrop +=0.0002;
 
 }
