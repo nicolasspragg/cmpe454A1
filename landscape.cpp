@@ -174,6 +174,9 @@ vec3 Landscape::findClosestPoint( vec3 position )
 }
 
 float Landscape::findAltitude(float landerX, float landerY){
+  // for some reason, this function only performs well in the left half of the screen,
+  // after the lander passes into the right half of the screen, the altitude readin is less accurate.
+	
   // find the segment the lander is directly above
   int segLeftIndex = 0;
   for (int i=0; i<numVerts-1; i+=2) {
