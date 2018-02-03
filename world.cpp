@@ -48,7 +48,7 @@ void World::updateState( float elapsedTime )
   // Check for landing or collision and let the user know
 
   // YOUR CODE HERE
-  if (closestDistance <= 5){
+  if (closestDistance <= 4.5){
     // cout << "collision";
     // use absolute value to cover both left and right directions
     if (abs(lander->getHorizSpeed()) <= 0.5 && lander->getVertSpeed() <= 1) {
@@ -63,7 +63,7 @@ void World::updateState( float elapsedTime )
   }
   // if the lander has collided, pause execution
   if (lander->getCollided()) {
-    if (endGame){ // this allows one more loop to draw changes
+    if (endGame){ // this allows one more loop of the program to run to draw changes (so we see the win/lose message)
       sleep(2);
       lander->reset();
       endGame = false;
@@ -71,9 +71,6 @@ void World::updateState( float elapsedTime )
       // exit(0);
     }
     else {
-      // this part is where we can notify the user of the result of the game
-
-      
       endGame = true;
     }
   }
@@ -140,7 +137,9 @@ void World::draw()
   drawStrokeString( ss2.str(), 0.6, 0.75, 0.06, glGetUniformLocation( myGPUProgram->id(), "MVP") );
 
   stringstream fuelStream;
-  fuelStream << "Fuel amount: " << lander->getFuel() << " L!";
+  float fuelRemaining = lander->getFuel();
+  if (fuelRemaining < 0) { fuelRemaining = 0; }
+  fuelStream << "Fuel amount: " << fuelRemaining << " L!";
   drawStrokeString( fuelStream.str(),-0.95, 0.65, 0.06, glGetUniformLocation( myGPUProgram->id(), "MVP") );
 
   string hArrowState = "";

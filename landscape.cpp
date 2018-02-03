@@ -87,6 +87,7 @@ void Landscape::setupVAO()
 
   glEnableVertexAttribArray( 0 );
   glVertexAttribPointer( 0, 2, GL_FLOAT, GL_FALSE, 0, 0 );
+
 }
 
 
@@ -120,47 +121,27 @@ vec3 Landscape::findClosestPoint( vec3 position, vec3 segTail, vec3 segHead )
   // the range [segTail,segHead], return the closest end of that
   // range.
 
-  // YOUR CODE HERE
-  vec3 projection;
-  vec3 segment;
-
-  segment.x = segTail.x - segHead.x;
-  segment.y = segTail.y - segHead.y;
-
-  float positionDotSegment = position.x * segment.x + position.y * segment.y;
-  float magnitudeSegmentSquared = segment.x * segment.x + segment.y * segment.y;
-  float fraction = positionDotSegment / magnitudeSegmentSquared;
-
-  projection.x = fraction * segment.x;
-  projection.y = fraction * segment.y;
-
+  // // YOUR CODE HERE
+  
+  vec3 directionVector = (segHead-segTail);
+  // find the constant to multiply the direction vector by
+  float constant = ( (position-segTail) * directionVector ) / ( directionVector.length() * directionVector.length() );
+  vec3 projection = constant*directionVector;
   // we have the projection but now we have to check if it is in range
   // (if the tip of the vector is between the two points)
   // if not, find closest end
-  if (projection.x >= segTail.x) {
-    if (projection.x < segHead.x) {
-      // return projection; // do nothing
-    } else {
-      return segHead;
-    }
-  } else {
-    if (projection.x > segHead.x) {
-      // return projection; // do nothing
-    } else {
-      return segTail;
-    }
+  if (projection.x >= segHead.x && projection.y >= segHead.y) {
+    return segHead;
   }
-
-  // cout << projection.x;
-  // cout << "\n";
-  // cout << projection.y;
-  // cout << "\n";
-  // cout << segment;
-  // cout << "\n";
-
+  if (projection.x <= segTail.x && projection.y <= segTail.y) {
+    return segTail;
+  }
   return projection;
-  // return vec3(0,0,0);
 
+  // there are admittedly some issues with this function,
+  // it works about 90% of the time but occasionally causes the view to zoom when it shouldn't
+  // as well as occasionally allows the lander to fly through certain segments
+  // it seems to always work on corners though
 }
 
 

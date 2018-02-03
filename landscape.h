@@ -22,6 +22,7 @@
 class Landscape {
 
   static float landscapeVerts[];
+  static float arrowVerts[];
   int numVerts;			// number of vertices in the landscape model
   GLuint VAO;
 
