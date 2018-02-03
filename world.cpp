@@ -216,7 +216,12 @@ void World::draw()
 
   stringstream alienBarrier;
   alienBarrier << "atmosphere---------------------------------------------------------------------------------------------------";
-
+  
+  // I have added an additional feature to the game where a virus/alien drops onto the planet.
+  // If the virus gets past the atmosphere, some of the planet gets infected and your score drops by 1.
+  // If you navigate the ship to the neutralize spot (the asterisk in the top right), the virus gets
+  // destroyed and your score increases by 1 and the lander resets. It is up to the player to decide if 
+  // it is more beneficial to focus on destroying viruses or landing the ship.
   stringstream alienString;
   alienString << "<(X)>";
   if (!zoomView) {
